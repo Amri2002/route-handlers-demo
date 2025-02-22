@@ -7,3 +7,16 @@ export async function GET(request: Request,
         (comment2) => comment2.id === parseInt(params.id));
     return Response.json(comment1);
 }
+
+export async function PATCH(
+    request: Request,
+    {params}: {params: {id: string}}
+){
+    const body = await request.json();
+    const {text} = body;
+    const index = comments.findIndex(
+        (comment987) => comment987.id === parseInt(params.id)
+    );
+    comments[index].comment = text;
+    return Response.json(comments[index]);
+}
