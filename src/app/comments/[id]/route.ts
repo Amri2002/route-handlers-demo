@@ -1,12 +1,13 @@
 import { comments } from "../data";
+import { NextRequest } from "next/server";
 
-export async function GET(
-  _request: Request,
-  { params }: { params: Promise<{ id: string }> }
-) {
-  const { id } = await params;
-  const comment = comments.find((comment) => comment.id === parseInt(id));
-  return Response.json(comment);
+export async function GET(request: NextRequest) {
+  const searchParams = request.nextUrl.searchParams;
+  const query = searchParams.get("query");
+  const filteredComments = query
+    ? comments.filter((comment) => comment.text.includes(query))
+    : comments;
+  return Response.json(filteredComments);
 }
 
 export async function PATCH(
